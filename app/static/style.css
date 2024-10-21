@@ -1,0 +1,117 @@
+:root{
+    --text-size: 1.5rem;
+    --text-color: rgb(51, 48, 59);
+    --text-line-height: 11.5;
+    --blog-title-size: 3.5rem;
+    --bg-color: #F1DEC6;
+    --box-color: #F1DEC6;
+    --title-color: #179BAE;
+    --border-color: #FF8343;
+    --footer-color: #4158A6;
+    --footer_text-color: #FF8343;
+}
+
+body{
+    background-color: var(--bg-color)!important;    /*название тега*/
+}
+
+#left-side{
+    max-height: 100vh;                              /*# - id*/
+}
+
+.box{
+    background-color: var(--box-color)!important;   /*. - класс*/
+    border: solid 1px var(--border-color);
+}
+
+.title{
+    color: var(--title-color)!important;
+}
+
+.title >a{
+    color: var(--title-color)!important;
+}
+
+.footer{
+    background-color: var(--footer-color)!important;
+    width: 100vw!important;
+    color: var(--footer_text-color)!important;
+}
+
+.image{
+    height: auto!important;
+    max-width: 25%!important;
+    margin-top: 2vh;
+}
+
+.navbar{
+    justify-content: space-between!important;
+    align-items: center!important;
+    background-color: transparent!important;
+    border-bottom: solid 1px var(--border-color);
+}
+
+.button{
+    border-color: var(--border-color)!important;
+    display: inline-flex!important;
+}
+
+.button:hover{
+    background-color: var(--border-color)!important;
+}
+
+form{
+    width: 30%!important;
+    justify-content: center!important;
+    align-items: center!important;
+    margin: 0 auto;
+}
+
+ul{
+    margin: 0 auto!important;
+    margin-top: 3vh!important;
+    width: 90%!important;
+}
+
+ul li{
+    border-bottom: solid 1px var(--border-color);
+    padding: 1.5vh 0;
+    display:flex;
+    justify-content: space-between;
+}
+
+li>div{
+    width: 80%;
+}
+
+li a{
+    display:block;
+}
+
+#admin-header{
+    display:flex;
+    padding: 2.5vh 5%;
+    align-items: center;
+}
+
+#admin-header h2{
+    max-width: 50%;
+    margin: 0 2vw 0 0!important;
+}
+
+#admin-header img{
+    border-radius: 50%;
+}
+
+header+div{
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 5%;
+}
+
+#post-editor{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start!important;
+    align-items: flex-start!important;
+}

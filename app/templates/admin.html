@@ -1,0 +1,37 @@
+{%extends "base.html"%}
+{%block content%}
+
+<div class = "tile is-vertical is-parent">
+<section class = "tile is-child box">
+<header id="admin-header">
+<h2 class="title is-2">admin: {{user.username}}</h2>
+<img src="{{user.avatar(64)}}" alt="avatar">
+{%if user.about_me%}
+    <p>
+        {{user.about_me}}
+    </p>
+{%endif%}
+{%if user.last_seen%}
+    <p>
+        last_seen: {{user.last_seen}}
+    </p>
+{%endif%}
+</header>
+<div>
+<a id="new-post-btn" class="button">Create new blockpost</a>
+</div>
+<ul>
+    {%for post in posts%}
+    <li>
+        <div>
+        <h3 class="title is-5">{{post.post_title}}</h3>
+        <h4 class="subtitle is-6">author: {{post.author.username}}</h4>
+        </div>
+    <a class="button" href="">Update</a>
+    <a class="button" href="">Delete</a>
+    </li>
+    {%endfor%}
+</ul>
+</section>
+</div>
+{%endblock%}

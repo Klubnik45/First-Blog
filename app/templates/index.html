@@ -1,0 +1,17 @@
+{%extends "base.html"%}
+{%block content%}
+<div class = "tile is-vertical is-parent">
+{%for post in posts%}
+    <div class = "tile is-child box">
+    <h2 class="title is-3"><a href="{{url_for('post', id = post.id)}}">{{post.post_title}}</a></h2>
+    <span class="subtitle is-5">author: {{post.author.username}}</span>
+    <p>{{post.post_body}}</p>
+    {%if post.images|length > 0%}
+    <figure class="image">
+    <img class="" src="{{url_for('static', filename = 'toothless.jpg')}}" alt="">
+    </figure>
+    {%endif%}
+    </div>
+{%endfor%}
+</div>
+{%endblock%}
