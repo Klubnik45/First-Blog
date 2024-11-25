@@ -1,15 +1,12 @@
 {%extends "base.html"%}
 {%block content%}
 <div class = "tile is-vertical is-parent">
-<article class = "tile is-child box">
-    <h3 class = "title">{{post.post_title}}</h3>
-    <h5 class = "subtitle">author: {{post.author.username}}</h5>
-    <p>{{post.post_body}}</p>
-    {%if post.images|length > 0%}
-    <figure class="image">
-    <img class="" src="{{url_for('static', filename = 'toothless.jpg')}}" alt="">
-    </figure>
-    {%endif%}
+<article class = "tile is-child box blogpost">
+    <header class="post-header">
+        <h3 class = "title">{{post.post_title}}</h3>
+        <h5 class = "author">author: {{post.author.username}}</h5>
+    </header>
+    {{post.post_body | safe}}
 </article>
 </div>
 {%endblock%}

@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 :root{
     --text-size: 1.5rem;
     --text-color: rgb(51, 48, 59);
@@ -13,6 +16,15 @@
 
 body{
     background-color: var(--bg-color)!important;    /*название тега*/
+    font-family: "Roboto", sans-serif!important;
+    line-height: 1.5!important;
+    font-size: calc(14px + (20 - 14) * ((100vw - 300px) / (1600 - 300)))!important;
+}
+
+h1, h2, h3, h5, h6 {
+    font-family: "Lora", serif!important;
+    line-height: 1.2;
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem)!important;
 }
 
 #left-side{
@@ -114,4 +126,66 @@ header+div{
     flex-direction: column;
     justify-content: flex-start!important;
     align-items: flex-start!important;
+}
+
+.blogpost> img{
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 2vh auto;
+}
+
+.blogpost ul{
+    padding: 0!important;
+    margin: 0!important;
+    list-style-type: circle !important;
+}
+
+.blogpost ul li{
+    border-bottom: 0;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 2;
+}
+
+.blogpost{
+    padding: 2vmax 3vmax!important;
+}
+
+.blogpost> h2, .blogpost> h3, .blogpost> h4{
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.blogpost> p{
+    margin: 1.5vh 0;
+}
+
+.blogpost .author{
+    font-style: italic;
+}
+
+.author{
+    color: rgb(183, 179, 179);
+    margin-top: 1.5vmin!important;
+}
+
+.post-header{
+    margin-bottom: 2vmin;
+}
+
+#logo {
+    display: inline-block;
+    width: 10vmin;
+    height: auto;
+    vertical-align: sub;
+    margin-top: 3vmin;
+}
+
+#plusbt {
+    width: 3rem;
+    height: auto;
+    position: fixed;
+    bottom: 2%;
+    right: 2%;
 }

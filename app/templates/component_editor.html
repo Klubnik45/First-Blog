@@ -1,0 +1,35 @@
+{%extends "base.html"%}
+{%block content%}
+<form id="component-editor" method = "POST" novalidate>
+    <h2 class="title">component Editor</h2>
+    {{form.hidden_tag()}}
+    {%if component%}
+    {{form.component_title.label(class="label")}}
+    {{form.component_title(size = 70, class="input", value = component.component_title)}}
+    {%for error in form.component_title.errors%}
+    <span>{{error}}</span>
+    {%endfor%}
+  
+    {{form.hidden_tag()}}
+    {{form.component_body.label(class="label")}}
+    {{form.component_body(cols = 60, rows = 100, class="textArea", default = component.component_body)}}
+    {{form.component_type.label(class="label")}}
+    {{form.component_type()}}
+    {%else%}
+    {{form.component_title.label(class="label")}}
+    {{form.component_title(size = 70, class="input")}}
+    {%for error in form.component_title.errors%}
+    <span>{{error}}</span>
+    {%endfor%}
+  
+    {{form.hidden_tag()}}
+    {{form.component_body.label(class="label")}}
+    {{form.component_body(cols = 60, rows = 100, class="textArea")}}
+    {{form.component_type.label(class="label")}}
+    {{form.component_type()}}
+    {%endif%}
+    <br>
+    {{form.submit(class="button")}}
+</form>
+
+{%endblock%}

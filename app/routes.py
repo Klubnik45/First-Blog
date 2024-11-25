@@ -1,26 +1,29 @@
-from flask import render_template, flash, redirect, url_for # импорт функций из пакета flask (render_template - принимает имя шаблона и список переменных аргументов шаблона и возвращает готовый шаблон с заменёнными аргументами, flash — используется для отображения временных сообщений пользователю после выполнения определённого запроса, redirect — позволяет перенаправлять пользователей на указанный URL и присваивать указанному коду состояния, url_for - генерация URL)
+from flask import render_template, flash, redirect, url_for, request # импорт функций из пакета flask (render_template - принимает имя шаблона и список переменных аргументов шаблона и возвращает готовый шаблон с заменёнными аргументами, flash — используется для отображения временных сообщений пользователю после выполнения определённого запроса, redirect — позволяет перенаправлять пользователей на указанный URL и присваивать указанному коду состояния, url_for - генерация URL)
 from app import app, db # импорт переменных
-from app.forms import LoginForm, Registration, PostEditor # импорт классов (LoginForm - реализует представление окна входа в систему, Registration - сохранение ссылки на объект одного класса в другом, PostEditor - редактирует сообщения)
+from app.forms import LoginForm, Registration, PostEditor, ComponentEditor # импорт классов (LoginForm - реализует представление окна входа в систему, Registration - сохранение ссылки на объект одного класса в другом, PostEditor - редактирует сообщения)
 from flask_login import current_user, login_user, logout_user, login_required # Flask-Login — это расширение Flask, которое управляет состоянием входа пользователя в систему.
-from app.models import User, Post
+from app.models import User, Post, Component
+from markdown_processer import *
 import sqlalchemy as alchemy
 
-user = {"username": "Alex"}
-posts = [{"id":1, "images":['Dragonheart-1.jpg', 'smaug_dragon-1.webp', 'toothless.jpg'], "author": {"username": "Bobby"}, "post_title": "Here There Be Dragons", "post_body": "I trust you all caught “The Red Dragon and the Gold,” the fourth episode of season 2 of HOUSE OF THE DRAGON.   A lot of you have been wanting for action, I know; this episode delivered it in spades with the Battle of Rook’s Rest, when dragon met dragon in the skies."}, {"id":2, "images":[], "author": {"username": user["username"]}, "post_title": "A Bold New Look for the A Song of Ice and Fire Boxed Set", "post_body": "Behold, the stunning new covers for the first five books! These covers will be available in a boxed set, available online and in stores this October."}, {"id":3, "images":[], "author": {"username": "Bobby"}, "post_title": "On the Road Again", "post_body": "We will be headed across the Atlantic in a week or so for the longest trip we’ve taken in a while, part business and part pleasure."}]
 
 @app.route("/") #декоратор, указывает путь на адрес страницы
 @app.route("/index")
 def index():
-    return render_template("index.html", title = "Home", user = user, posts = posts)
+    q = alchemy.select(Post).order_by(Post.date_created.desc())
+    posts = db.session.scalars(q).all()
+    for p in posts:
+        p.post_body = gen_html(p.post_body)
+        print(p.post_body)
+    return render_template("index.html", title = "Home", user = current_user, posts = posts)
 
 
 @app.route("/posts/<int:id>")
 def post(id):
-    post = {}
-    for p in posts:
-        if p["id"] == id:
-            post = p
-            break
+    post = Post.query.get(id)
+    print(post.post_body, "########################")
+    post.post_body = gen_html(post.post_body)
+    print(post.post_body, "************************")
     return render_template("post.html", post = post)
 
 
@@ -65,15 +68,81 @@ def register():
 @app.route("/admin/<username>")
 @login_required
 def admin(username):
+    posts = db.session.query(Post).all()
     user = db.first_or_404(alchemy.select(User).where(User.username == username))
-    return render_template("admin.html", user = user, posts = posts)
+    components = db.session.query(Component).all()
+    return render_template("admin.html", user = user, posts = posts, components = components)
 
 
-@app.route("/admin/post_editor", methods = ['GET', 'POST'])
+@app.route("/admin/post_editor/<action>", methods = ['GET', 'POST'])
 @login_required
-def post_editor():
+def post_editor(action):
+    id = request.args.get("id")
+    if action == "update" and request.method == "GET":
+        post = db.session.query(Post).get(id)
+        form = PostEditor()
+        form.post_body.data = post.post_body
+        return render_template("posteditor.html", form = form, post = post, title = "Post editor")
     form = PostEditor()
+    
     if form.validate_on_submit():
-        title = form.post_title.date
-        body = form.post_body.date
+        title = form.post_title.data
+        body = form.post_body.data
+        if action == "new":
+            new_post = Post(post_title = title, post_body = body, author = current_user)
+            db.session.add(new_post)
+            db.session.commit()
+            flash("Added new post")
+        if action == "update":
+            post = db.session.query(Post).get(id)
+            post.post_title = form.post_title.data
+            post.post_body = form.post_body.data
+            db.session.commit()
+          
+        return redirect(url_for("admin", username = current_user.username))
     return render_template("posteditor.html", form = form, title = "Post editor")
+
+@app.route("/admin/delete", methods = ['GET', 'POST'])
+def delete():
+    id = request.args.get("id")
+    post = db.session.query(Post).get(id)
+    db.session.query(Post).filter_by(id = id).delete()
+    db.session.commit()
+    return redirect(url_for("admin", username = current_user.username))
+
+@app.route("/admin/component_editor/<action>", methods = ['GET', 'POST'])
+def component_editor(action):
+    id = request.args.get("id")
+    if action == "update" and request.method == "GET":
+        component = db.session.query(Component).get(id)
+        form = ComponentEditor()
+        form.component_body.data = component.component_body
+        return render_template("component_editor.html", form = form, component = component, title = "Component editor")
+    form = ComponentEditor()
+
+    if form.validate_on_submit():
+        title = form.component_title.data
+        body = form.component_body.data
+        component_type = form.component_type.data
+        print(component_type)
+        if action == "new":
+            new_component = Component(component_title = title, component_body = body, component_type = component_type)
+            db.session.add(new_component)
+            db.session.commit()
+            flash("Added new_component")
+        if action == "update":
+            component = db.session.query(Component).get(id)
+            component.component_title = form.component_title.data
+            component.component_body = form.component_body.data
+            component_type.component_type = form.component_type.data
+            db.session.commit()
+        return redirect(url_for("admin", username = current_user.username))          
+    return render_template("component_editor.html", form = form, title = "component_editor")
+
+@app.route("/admin/component_delete", methods = ['GET', 'POST'])
+def component_delete():
+    id = request.args.get("id")
+    #component = db.session.query(Component).get(id)
+    db.session.query(Component).filter_by(id = id).delete()
+    db.session.commit()
+    return redirect(url_for("admin", username = current_user.username))

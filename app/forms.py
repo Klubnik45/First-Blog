@@ -1,11 +1,13 @@
 from collections.abc import Sequence
 from typing import Any, Mapping
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length
 from app import db
 from app.models import User
 import sqlalchemy as alcemy
+
+component_types = [("sitebar component", "sitebar component")]
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
@@ -31,6 +33,13 @@ class Registration(FlaskForm):
             raise ValidationError("Please chouse a different email.")
 
 class PostEditor(FlaskForm):
-    post_title = StringField("Title", validators=[DataRequired(), Length(min=10, max=75)])
-    post_text = TextAreaField("Text", validators=[Length(min=0, max=750)])
+    post_title = StringField("Title", validators=[DataRequired(), Length(min=5, max=75)])
+    post_body = TextAreaField("Text", validators=[Length(min=0, max=5000)])
+    submit = SubmitField("Save")
+
+
+class ComponentEditor(FlaskForm):
+    component_title = StringField("Title", validators=[DataRequired(), Length(min=5, max=75)])
+    component_body = TextAreaField("Text", validators=[Length(min=0, max=5000)])
+    component_type = SelectField("Type", choices=component_types)
     submit = SubmitField("Save")

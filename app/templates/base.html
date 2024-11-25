@@ -11,7 +11,7 @@
     <section class = "section">
         <div class = "container">
            <span class = "title navbar">
-                <a href="/index" class="title is-1">Alex Space</a>
+                <a href="/index" class="title">Alex Space <img id="logo" src="{{url_for('static', filename = 'logo.svg')}}" alt=""> </a>
                 {%if current_user.is_anonymous%}
                 <a href="{{url_for('login')}}" class="button is-primary is-medium is-outlined navbar-item">Log in</a>
                 {%else%}
@@ -31,19 +31,16 @@
     {%endwith%}
     <div class = "tile is-ancestor">
         <div class = "tile is-4 is-vertical is-parent" id="left-side">
+            {%for component in components%}
            <div class = "tile is-child box">
-              <p class = "title">First Box</p>
-              <p>This is some sample text. This is some sample text. 
-              This is some sample text. This is some sample text. 
-              This is some sample text. This is some sample text.</p>
+            <a href="{{url_for('component_editor', action = 'update', id = 1)}}"><img src="{{url_for('static', filename = 'edit_icon.svg')}}" alt=""></a>
+            <a href="{{url_for('component_delete', id = 1)}}"><img src="{{url_for('static', filename = 'delete-svgrepo.svg')}}" alt=""></a>  
+              <p class = "title">{{component.component_title}}</p>
+              {{component.component_body}}
            </div>
-           <div class = "tile is-child box">
-              <p class = "title">Second Box</p>
-              <p>This is some sample text. This is some sample text. 
-              This is some sample text. This is some sample text. 
-              This is some sample text. This is some sample text.</p>
-           </div>
+           {%endfor%}
         </div>
+        <a href="{{url_for('component_editor', action = 'new')}}"><img id= "plusbt", src="{{url_for('static', filename = 'plus-svgrepo.svg')}}" alt=""></a>
         {%block content%}{%endblock%}
         </div>
     </div>
