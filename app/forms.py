@@ -7,7 +7,7 @@ from app import db
 from app.models import User
 import sqlalchemy as alcemy
 
-component_types = [("sitebar component", "sitebar component")]
+component_types = [("sitebar component", "sitebar component"), ("blog name", "blog name"), ("socialbar", "socialbar")]
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])

@@ -11,7 +11,23 @@
     <section class = "section">
         <div class = "container">
            <span class = "title navbar">
-                <a href="/index" class="title">Alex Space <img id="logo" src="{{url_for('static', filename = 'logo.svg')}}" alt=""> </a>
+                {%for component in components%}
+                {%if component.component_type == "blog name"%}
+                <div id="logo_container">
+                {%if not current_user.is_anonymous%}
+                <a href="{{url_for('component_editor', action = 'update', id = component.id)}}"><img src="{{url_for('static', filename = 'edit_icon.svg')}}" alt=""></a>
+                {%endif%}
+                <a href="/index" class="title"> {{component.component_title}} <img id="logo" src="{{url_for('static', filename = 'logo.svg')}}" alt=""> </a>
+                <div class="icon-bar">
+                    <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                    <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                    <a href="#" class="google"><i class="fa fa-google"></i></a>
+                    <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+                    <a href="#" class="youtube"><i class="fa fa-youtube"></i></a>
+                  </div>
+                </div>
+                {%endif%}
+                {%endfor%}
                 {%if current_user.is_anonymous%}
                 <a href="{{url_for('login')}}" class="button is-primary is-medium is-outlined navbar-item">Log in</a>
                 {%else%}
@@ -32,15 +48,21 @@
     <div class = "tile is-ancestor">
         <div class = "tile is-4 is-vertical is-parent" id="left-side">
             {%for component in components%}
+            {%if component.component_type == "sitebar component"%}
            <div class = "tile is-child box">
-            <a href="{{url_for('component_editor', action = 'update', id = 1)}}"><img src="{{url_for('static', filename = 'edit_icon.svg')}}" alt=""></a>
-            <a href="{{url_for('component_delete', id = 1)}}"><img src="{{url_for('static', filename = 'delete-svgrepo.svg')}}" alt=""></a>  
-              <p class = "title">{{component.component_title}}</p>
-              {{component.component_body}}
+            {%if not current_user.is_anonymous%}
+            <a href="{{url_for('component_editor', action = 'update', id = component.id)}}"><img src="{{url_for('static', filename = 'edit_icon.svg')}}" alt=""></a>
+            <a href="{{url_for('component_delete', id = component.id)}}"><img class= "delete-btn", src="{{url_for('static', filename = 'delete-svgrepo.svg')}}" alt=""></a>  
+            {%endif%}  
+            <p class = "title">{{component.component_title}}</p>
+              {{component.component_body | safe}}
            </div>
+           {%endif%}
            {%endfor%}
         </div>
+        {%if not current_user.is_anonymous%}
         <a href="{{url_for('component_editor', action = 'new')}}"><img id= "plusbt", src="{{url_for('static', filename = 'plus-svgrepo.svg')}}" alt=""></a>
+        {%endif%}
         {%block content%}{%endblock%}
         </div>
     </div>

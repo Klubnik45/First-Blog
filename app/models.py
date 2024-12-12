@@ -44,6 +44,15 @@ class Post(db.Model):
     def __repr__(self):
         return f"Post: {self.post_title, self.date_created}"
     
+
+    def set_body(self, new_body):
+        self.post_body = new_body
+
+
+    def get_body(self):
+        return self.post_body
+
+    
 @login.user_loader
 def load_user(id):
     return db.session.get(User, int(id))
@@ -54,3 +63,11 @@ class Component(db.Model):
     component_title: orm.Mapped[str] = orm.mapped_column(alchemy.String(70))
     component_body: orm.Mapped[str] = orm.mapped_column(alchemy.String(500))
     component_type: orm.Mapped[str] = orm.mapped_column(alchemy.String(50))
+
+
+    def set_body(self, new_body):
+        self.component_body = new_body
+
+
+    def get_body(self):
+        return self.component_body

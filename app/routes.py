@@ -7,24 +7,28 @@ from markdown_processer import *
 import sqlalchemy as alchemy
 
 
+def get_html(markdown):
+    for p in markdown:
+        p.set_body(gen_html(p.get_body()))
+    return markdown
+
+def get_components():
+    return db.session.query(Component).all()
+
+
 @app.route("/") #декоратор, указывает путь на адрес страницы
 @app.route("/index")
 def index():
     q = alchemy.select(Post).order_by(Post.date_created.desc())
     posts = db.session.scalars(q).all()
-    for p in posts:
-        p.post_body = gen_html(p.post_body)
-        print(p.post_body)
-    return render_template("index.html", title = "Home", user = current_user, posts = posts)
+    return render_template("index.html", title = "Home", user = current_user, posts = get_html(posts), components = get_html(get_components()))
 
 
 @app.route("/posts/<int:id>")
 def post(id):
     post = Post.query.get(id)
-    print(post.post_body, "########################")
     post.post_body = gen_html(post.post_body)
-    print(post.post_body, "************************")
-    return render_template("post.html", post = post)
+    return render_template("post.html", post = post, components = get_html(get_components()))
 
 
 @app.route("/login", methods = ['GET', 'POST'])
@@ -41,7 +45,7 @@ def login():
         login_user(user, remember=form.remember_me)
         return redirect(url_for("index"))
     
-    return render_template("login_form.html", form = form, title = "Log in")
+    return render_template("login_form.html", form = form, title = "Log in", components = get_html(get_components()))
 
 
 @app.route("/logout")
@@ -134,7 +138,7 @@ def component_editor(action):
             component = db.session.query(Component).get(id)
             component.component_title = form.component_title.data
             component.component_body = form.component_body.data
-            component_type.component_type = form.component_type.data
+            component.component_type = form.component_type.data
             db.session.commit()
         return redirect(url_for("admin", username = current_user.username))          
     return render_template("component_editor.html", form = form, title = "component_editor")
