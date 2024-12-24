@@ -1,6 +1,14 @@
 {%extends "base.html"%}
 {%block content%}
 <div class = "tile is-vertical is-parent">
+    {%if posts | length == 0%}
+    <p> No blog posts </p>
+    {%if current_user.is_anonymous%}
+    <a href="{{url_for('login')}}" class="button is-primary is-medium is-outlined navbar-item">Log in</a>
+    {%else%}
+    <a href="{{url_for('admin', username = current_user.username)}}" class="button">Dashboard -></a>
+    {%endif%}
+    {%else%}
 {%for post in posts%}
     <div class = "tile is-child box blogpost">
     <h2 class="title is-3"><a href="{{url_for('post', id = post.id)}}">{{post.post_title}}</a></h2>
@@ -13,5 +21,6 @@
     {%endif%}
     </div>
 {%endfor%}
+ {%endif%}
 </div>
 {%endblock%}

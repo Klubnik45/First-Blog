@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request # импорт функций из пакета flask (render_template - принимает имя шаблона и список переменных аргументов шаблона и возвращает готовый шаблон с заменёнными аргументами, flash — используется для отображения временных сообщений пользователю после выполнения определённого запроса, redirect — позволяет перенаправлять пользователей на указанный URL и присваивать указанному коду состояния, url_for - генерация URL)
 from app import app, db # импорт переменных
-from app.forms import LoginForm, Registration, PostEditor, ComponentEditor # импорт классов (LoginForm - реализует представление окна входа в систему, Registration - сохранение ссылки на объект одного класса в другом, PostEditor - редактирует сообщения)
+from app.forms import LoginForm, Registration, PostEditor, ComponentEditor, GetReset, PasswordResetForm # импорт классов (LoginForm - реализует представление окна входа в систему, Registration - сохранение ссылки на объект одного класса в другом, PostEditor - редактирует сообщения)
 from flask_login import current_user, login_user, logout_user, login_required # Flask-Login — это расширение Flask, которое управляет состоянием входа пользователя в систему.
 from app.models import User, Post, Component
 from markdown_processer import *
@@ -60,7 +60,7 @@ def register():
         return redirect(url_for("index"))
     form = Registration()
     if form.validate_on_submit():
-        user = User(username = form.username.data, email = form.email.data)
+        user = User(username = form.username.data, email = form.email.data, question = form.question.data, answer = form.answer.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -86,7 +86,7 @@ def post_editor(action):
         post = db.session.query(Post).get(id)
         form = PostEditor()
         form.post_body.data = post.post_body
-        return render_template("posteditor.html", form = form, post = post, title = "Post editor")
+        return render_template("posteditor.html", form = form, post = post, title = "Post editor", components = get_html(get_components()))
     form = PostEditor()
     
     if form.validate_on_submit():
@@ -104,7 +104,7 @@ def post_editor(action):
             db.session.commit()
           
         return redirect(url_for("admin", username = current_user.username))
-    return render_template("posteditor.html", form = form, title = "Post editor")
+    return render_template("posteditor.html", form = form, title = "Post editor", components = get_html(get_components()))
 
 @app.route("/admin/delete", methods = ['GET', 'POST'])
 def delete():
@@ -121,7 +121,7 @@ def component_editor(action):
         component = db.session.query(Component).get(id)
         form = ComponentEditor()
         form.component_body.data = component.component_body
-        return render_template("component_editor.html", form = form, component = component, title = "Component editor")
+        return render_template("component_editor.html", form = form, component = component, title = "Component editor", components = get_html(get_components()))
     form = ComponentEditor()
 
     if form.validate_on_submit():
@@ -141,7 +141,7 @@ def component_editor(action):
             component.component_type = form.component_type.data
             db.session.commit()
         return redirect(url_for("admin", username = current_user.username))          
-    return render_template("component_editor.html", form = form, title = "component_editor")
+    return render_template("component_editor.html", form = form, title = "component_editor", components = get_html(get_components()))
 
 @app.route("/admin/component_delete", methods = ['GET', 'POST'])
 def component_delete():
@@ -150,3 +150,13 @@ def component_delete():
     db.session.query(Component).filter_by(id = id).delete()
     db.session.commit()
     return redirect(url_for("admin", username = current_user.username))
+
+@app.route("/password_reset", methods = ['GET', 'POST'])
+def password_reset():
+    form = PasswordResetForm()
+    return render_template("passwordresetform.html", form = form, title = "password reset form")
+
+@app.route("/start_reset", methods = ['GET', 'POST'])
+def start_reset():
+    form = GetReset()
+    return render_template("getreset.html", form = form, title = "getreset")

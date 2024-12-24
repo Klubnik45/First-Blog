@@ -18,6 +18,8 @@
                 <a href="{{url_for('component_editor', action = 'update', id = component.id)}}"><img src="{{url_for('static', filename = 'edit_icon.svg')}}" alt=""></a>
                 {%endif%}
                 <a href="/index" class="title"> {{component.component_title}} <img id="logo" src="{{url_for('static', filename = 'logo.svg')}}" alt=""> </a>
+                {%else %}
+                <a href="/index" class="title"> BLOG NAME <img id="logo" src="{{url_for('static', filename = 'logo.svg')}}" alt=""> <a href="{{url_for('component_editor', action = 'update', id = component.id)}}"><img src="{{url_for('static', filename = 'edit_icon.svg')}}" alt=""></a>
                 <div class="icon-bar">
                     <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
                     <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
@@ -25,14 +27,14 @@
                     <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
                     <a href="#" class="youtube"><i class="fa fa-youtube"></i></a>
                   </div>
-                </div>
                 {%endif%}
                 {%endfor%}
                 {%if current_user.is_anonymous%}
                 <a href="{{url_for('login')}}" class="button is-primary is-medium is-outlined navbar-item">Log in</a>
                 {%else%}
-                <a href="{{url_for('logout')}}" class="button is-primary is-medium is-outlined navbar-item">Logout</a>
+                <a href="{{url_for('logout')}}" class="button is-primary is-medium is-outlined navbar-item">Log out</a>
                 {%endif%}
+                </div>
            </span>
            <br>
            <br>

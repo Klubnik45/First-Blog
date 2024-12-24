@@ -12,7 +12,7 @@
   
     {{form.hidden_tag()}}
     {{form.post_body.label(class="label")}}
-    {{form.post_body(cols = 60, rows = 100, class="textArea", default = post.post_body)}}
+    {{form.post_body(class="textArea", default = post.post_body)}}
     {%else%}
     {{form.post_title.label(class="label")}}
     {{form.post_title(size = 70, class="input")}}
@@ -22,7 +22,7 @@
   
     {{form.hidden_tag()}}
     {{form.post_body.label(class="label")}}
-    {{form.post_body(cols = 60, rows = 100, class="textArea")}}
+    {{form.post_body(class="textArea")}}
     {%endif%}
     <br>
     {{form.submit(class="button")}}

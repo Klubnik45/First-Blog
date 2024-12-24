@@ -8,6 +8,7 @@ from app.models import User
 import sqlalchemy as alcemy
 
 component_types = [("sitebar component", "sitebar component"), ("blog name", "blog name"), ("socialbar", "socialbar")]
+questions = [("whot is your favorite song?", "whot is your favorite song?"), ("whot is your favorite movie?", "whot is your favorite movie?"), ("whot is your favorite writer?", "whot is your favorite writer?"), ("How is your favorite actor?", "How is your favorite actor?"), ("whot is your favorite animal?", "whot is your favorite animal?")]
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
@@ -20,6 +21,8 @@ class Registration(FlaskForm):
     email = StringField("Email", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
     password_2 = PasswordField("Repeat Password", validators=[DataRequired(), EqualTo("password")])
+    question = SelectField("Question", choices=questions)
+    answer = StringField("Answer", validators=[DataRequired()])
     submit = SubmitField("Register")
 
     def validate_username(self, username):
@@ -43,3 +46,15 @@ class ComponentEditor(FlaskForm):
     component_body = TextAreaField("Text", validators=[Length(min=0, max=5000)])
     component_type = SelectField("Type", choices=component_types)
     submit = SubmitField("Save")
+
+
+class GetReset(FlaskForm):
+    username = StringField("Username", validators=[DataRequired()])
+    submit = SubmitField("Next")
+
+
+class PasswordResetForm(FlaskForm):
+    password = PasswordField("New Password", validators=[DataRequired()])
+    password_2 = PasswordField("Repeat New Password", validators=[DataRequired(), EqualTo("password")])
+    answer = StringField("Answer", validators=[DataRequired()])
+    submit = SubmitField("Reset Password")

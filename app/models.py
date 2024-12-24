@@ -15,6 +15,8 @@ class User(db.Model, UserMixin):
     posts: orm.WriteOnlyMapped['Post'] = orm.relationship(back_populates="author")
     about_me: orm.Mapped[Optional[str]] = orm.mapped_column(alchemy.String(256)) # биография
     last_seen: orm.Mapped[Optional[datetime]] = orm.mapped_column(default=lambda:datetime.now(timezone.utc)) # указание времени последнего посещения
+    question: orm.Mapped[str] = orm.mapped_column(alchemy.String(64), index=True)
+    answer: orm.Mapped[str] = orm.mapped_column(alchemy.String(64), index=True)
 
 
     def __repr__(self):

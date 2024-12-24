@@ -1,0 +1,15 @@
+{%extends "base.html"%}
+{%block content%}
+
+<form action=""method = "post" novalidate>
+    <h2 class="title">Passwordreset</h2>
+    {{form.hidden_tag()}}
+    {{form.username.label(class="label")}}
+    {{form.username(size = 16, class="input")}}
+    {%for error in form.username.errors%}
+    <span>{{error}}</span>
+    {%endfor%}
+
+    {{form.submit(class="button")}}
+</form>
+{%endblock%}

@@ -18,7 +18,11 @@ body{
     background-color: var(--bg-color)!important;    /*название тега*/
     font-family: "Roboto", sans-serif!important;
     line-height: 1.5!important;
+    min-height: 100vh;
     font-size: calc(14px + (20 - 14) * ((100vw - 300px) / (1600 - 300)))!important;
+    display: flex!important;
+    flex-flow: column!important;
+    justify-content: space-between;
 }
 
 h1, h2, h3, h5, h6 {
@@ -193,4 +197,9 @@ header+div{
 .delete-btn {
     width: 2rem;
     height: auto;
+}
+
+textarea {
+    width: 30vw;
+    height: 30vh;
 }
