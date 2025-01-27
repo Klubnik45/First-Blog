@@ -6,7 +6,7 @@
     {%if current_user.is_anonymous%}
     <a href="{{url_for('login')}}" class="button is-primary is-medium is-outlined navbar-item">Log in</a>
     {%else%}
-    <a href="{{url_for('admin', username = current_user.username)}}" class="button">Dashboard -></a>
+    <a href="{{url_for('admin', username = current_user.username)}}" id="dashboard-btn" class="button">Dashboard -></a>
     {%endif%}
     {%else%}
 {%for post in posts%}
@@ -14,11 +14,6 @@
     <h2 class="title is-3"><a href="{{url_for('post', id = post.id)}}">{{post.post_title}}</a></h2>
     <span class="author">author: {{post.author.username}}</span>
     {{post.post_body | safe}}
-    {%if post.images|length > 0%}
-    <figure class="image">
-    <img class="" src="{{url_for('static', filename = 'toothless.jpg')}}" alt="">
-    </figure>
-    {%endif%}
     </div>
 {%endfor%}
  {%endif%}

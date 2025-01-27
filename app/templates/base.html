@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{url_for('static', filename = 'style.css')}}">
+    <script src="{{url_for('static', filename = 'loadSettings.js')}}" defer></script>
     <title>{{title}}</title>
     <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css"> <!--CDN (так пишется комментарий)-->
 </head>
@@ -15,18 +16,25 @@
                 {%if component.component_type == "blog name"%}
                 <div id="logo_container">
                 {%if not current_user.is_anonymous%}
+                <span>
+                <a href="/index" class="title"> {{component.component_title}} <img id="logo" src="{{url_for('static', filename = 'logo.svg')}}" alt=""></a>
+                <a href="{{url_for('component_editor', action = 'update', id = component.id)}}"><img src="{{url_for('static', filename = 'edit_icon.svg')}}" alt=""></a>
+                </span>
+                {%else %}
+                <a href="/index" class="title"> {{component.component_title}} <img id="logo" src="{{url_for('static', filename = 'logo.svg')}}" alt=""></a>
                 <a href="{{url_for('component_editor', action = 'update', id = component.id)}}"><img src="{{url_for('static', filename = 'edit_icon.svg')}}" alt=""></a>
                 {%endif%}
-                <a href="/index" class="title"> {{component.component_title}} <img id="logo" src="{{url_for('static', filename = 'logo.svg')}}" alt=""> </a>
                 {%else %}
-                <a href="/index" class="title"> BLOG NAME <img id="logo" src="{{url_for('static', filename = 'logo.svg')}}" alt=""> <a href="{{url_for('component_editor', action = 'update', id = component.id)}}"><img src="{{url_for('static', filename = 'edit_icon.svg')}}" alt=""></a>
+                <span>
+                    <a href="/index" class="title"> blog name <img id="logo" src="{{url_for('static', filename = 'logo.svg')}}" alt=""></a>
+                </span>
                 <div class="icon-bar">
                     <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
                     <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
                     <a href="#" class="google"><i class="fa fa-google"></i></a>
                     <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
                     <a href="#" class="youtube"><i class="fa fa-youtube"></i></a>
-                  </div>
+                </div>
                 {%endif%}
                 {%endfor%}
                 {%if current_user.is_anonymous%}

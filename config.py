@@ -1,5 +1,6 @@
 import os
 base_dir = os.path.abspath(os.path.dirname(__file__)) # указываем путь к папке проекта(abspath - точная (абсолютная) дорога (путь к папке))
 class Config:
-    SECRET_KEY = os.environ.get("SECRET_KEY") or "Alex" # временный ключ - Alex
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or "sqlite:///" + os.path.join(base_dir, "app.db") # адрес базы данных (ключ к базе данных)
+    TURSO_AUTH_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
+    TURSO_DATABASE_URL = os.environ.get("TURSO_DATABASE_URL")
+    SQLALCHEMY_DATABASE_URI = f"sqlite+{TURSO_DATABASE_URL}/?authToken{TURSO_AUTH_TOKEN}&secure=true" # адрес базы данных (ключ к базе данных)

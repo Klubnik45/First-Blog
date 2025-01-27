@@ -1,0 +1,14 @@
+{
+    "settings":{
+        "--text-size": "14px",
+        "--text-color": "rgb(51, 48, 59)",
+        "--text-line-height": 1.5,
+        "--blog-title-size": "3.5rem",
+        "--bg-color": "#F6C794",
+        "--box-color": "#FFF6B3",
+        "--title-color": "#179BAE",
+        "--border-color": "#FF8343",
+        "--footer-color": "#155E95",
+        "--footer_text-color": "#FF8343"
+    }
+}

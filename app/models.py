@@ -6,8 +6,13 @@ from app import db, login
 from datetime import datetime, timezone
 from flask_login import UserMixin
 from hashlib import md5
+from sqlalchemy.orm import DeclarativeBase
+
+class Base(DeclarativeBase):
+    pass
 
 class User(db.Model, UserMixin):
+    __tablename__ = "user"
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
     username: orm.Mapped[str] = orm.mapped_column(alchemy.String(64), index=True, unique=True)
     email: orm.Mapped[str] = orm.mapped_column(alchemy.String(120), index=True, unique=True)
@@ -36,6 +41,7 @@ class User(db.Model, UserMixin):
         return f"https://www.gravatar.com/avatar/{image}? if d = identicon&s={size}"
 
 class Post(db.Model):
+    __tablename__ = "post"
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
     post_title: orm.Mapped[str] = orm.mapped_column(alchemy.String(70))
     post_body: orm.Mapped[str] = orm.mapped_column(alchemy.String(5000))
@@ -61,6 +67,7 @@ def load_user(id):
 
 
 class Component(db.Model):
+    __tablename__ = "component"
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
     component_title: orm.Mapped[str] = orm.mapped_column(alchemy.String(70))
     component_body: orm.Mapped[str] = orm.mapped_column(alchemy.String(500))

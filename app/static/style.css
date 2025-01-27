@@ -4,7 +4,7 @@
 :root{
     --text-size: 1.5rem;
     --text-color: rgb(51, 48, 59);
-    --text-line-height: 11.5;
+    --text-line-height: 1.5;
     --blog-title-size: 3.5rem;
     --bg-color: #F1DEC6;
     --box-color: #F1DEC6;
@@ -17,9 +17,9 @@
 body{
     background-color: var(--bg-color)!important;    /*название тега*/
     font-family: "Roboto", sans-serif!important;
-    line-height: 1.5!important;
+    line-height: var(--text-line-height)!important;
     min-height: 100vh;
-    font-size: calc(14px + (20 - 14) * ((100vw - 300px) / (1600 - 300)))!important;
+    font-size: calc(var(--text-size) + (20 - 14) * ((100vw - 300px) / (1600 - 300)))!important;
     display: flex!important;
     flex-flow: column!important;
     justify-content: space-between;
@@ -61,8 +61,10 @@ h1, h2, h3, h5, h6 {
 }
 
 .navbar{
+    display: flex!important;
+    padding-bottom: 2vh!important;
     justify-content: space-between!important;
-    align-items: center!important;
+    align-items: flex-end!important;
     background-color: transparent!important;
     border-bottom: solid 1px var(--border-color);
 }
@@ -170,7 +172,7 @@ header+div{
 }
 
 .author{
-    color: rgb(183, 179, 179);
+    color: var(--text-color);
     margin-top: 1.5vmin!important;
 }
 
@@ -202,4 +204,14 @@ header+div{
 textarea {
     width: 30vw;
     height: 30vh;
+}
+
+.tile.is-ancestor {
+    margin-left: 5vw!important;
+    margin-right: 5vw!important;
+}
+
+#dashboard-btn {
+    width: 30%;
+    margin-top: 2vh;
 }
