@@ -154,6 +154,12 @@ def component_delete():
 @app.route("/password_reset", methods = ['GET', 'POST'])
 def password_reset():
     form = PasswordResetForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        user = db.session.query(User).filter_by(username = username).first()
+        answer = form.answer.data
+        if user.answer == answer:
+            user.password_hash = user.set_password(form.password.data)
     return render_template("passwordresetform.html", form = form, title = "password reset form")
 
 @app.route("/start_reset", methods = ['GET', 'POST'])

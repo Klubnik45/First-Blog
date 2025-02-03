@@ -22,11 +22,9 @@
                 </span>
                 {%else %}
                 <a href="/index" class="title"> {{component.component_title}} <img id="logo" src="{{url_for('static', filename = 'logo.svg')}}" alt=""></a>
-                <a href="{{url_for('component_editor', action = 'update', id = component.id)}}"><img src="{{url_for('static', filename = 'edit_icon.svg')}}" alt=""></a>
                 {%endif%}
                 {%else %}
                 <span>
-                    <a href="/index" class="title"> blog name <img id="logo" src="{{url_for('static', filename = 'logo.svg')}}" alt=""></a>
                 </span>
                 <div class="icon-bar">
                     <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>

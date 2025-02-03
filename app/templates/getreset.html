@@ -1,8 +1,8 @@
 {%extends "base.html"%}
 {%block content%}
 
-<form action=""method = "post" novalidate>
-    <h2 class="title">Passwordreset</h2>
+<form action="{{url_for('password_reset')}}"method = "post" novalidate>
+    <h2 class="title">Password Reset</h2>
     {{form.hidden_tag()}}
     {{form.username.label(class="label")}}
     {{form.username(size = 16, class="input")}}
