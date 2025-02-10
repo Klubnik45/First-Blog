@@ -39,7 +39,7 @@
                 <a href="{{url_for('login')}}" class="button is-primary is-medium is-outlined navbar-item">Log in</a>
                 {%else%}
                 <a href="{{url_for('logout')}}" class="button is-primary is-medium is-outlined navbar-item">Log out</a>
-                <a href="{{url_for('admin', username=current_username)}}" class="button is-primary is-medium is-outlined navbar-item">Dashboard</a>
+                <a href="{{url_for('admin', username=current_user.username)}}" class="button is-primary is-medium is-outlined navbar-item">Dashboard</a>
                 {%endif%}
                 </div>
            </span>
