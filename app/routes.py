@@ -96,12 +96,13 @@ def post_editor(action):
             new_post = Post(post_title = title, post_body = body, author = current_user)
             db.session.add(new_post)
             db.session.commit()
-            flash("Added new post")
+            flash("Added new post.")
         if action == "update":
             post = db.session.query(Post).get(id)
             post.post_title = form.post_title.data
             post.post_body = form.post_body.data
             db.session.commit()
+            flash("Updated post.")
           
         return redirect(url_for("admin", username = current_user.username))
     return render_template("posteditor.html", form = form, title = "Post editor", components = get_html(get_components()))
@@ -128,7 +129,6 @@ def component_editor(action):
         title = form.component_title.data
         body = form.component_body.data
         component_type = form.component_type.data
-        print(component_type)
         if action == "new":
             new_component = Component(component_title = title, component_body = body, component_type = component_type)
             db.session.add(new_component)
@@ -146,23 +146,24 @@ def component_editor(action):
 @app.route("/admin/component_delete", methods = ['GET', 'POST'])
 def component_delete():
     id = request.args.get("id")
-    #component = db.session.query(Component).get(id)
     db.session.query(Component).filter_by(id = id).delete()
     db.session.commit()
     return redirect(url_for("admin", username = current_user.username))
 
-@app.route("/password_reset", methods = ['GET', 'POST'])
-def password_reset():
+@app.route("/password_reset/<username>", methods = ['GET', 'POST'])
+def password_reset(username):
     form = PasswordResetForm()
-    if form.validate_on_submit():
-        username = form.username.data
+    if request.method == "POST":
         user = db.session.query(User).filter_by(username = username).first()
         answer = form.answer.data
         if user.answer == answer:
             user.password_hash = user.set_password(form.password.data)
+        return redirect(url_for("login"))
     return render_template("passwordresetform.html", form = form, title = "password reset form")
 
 @app.route("/start_reset", methods = ['GET', 'POST'])
 def start_reset():
     form = GetReset()
+    if request.method == "POST":
+        return redirect(url_for("password_reset", username = form.username.data))
     return render_template("getreset.html", form = form, title = "getreset")

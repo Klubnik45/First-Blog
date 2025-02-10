@@ -66,10 +66,8 @@ with open ("post_text.txt", "r", encoding="utf-8") as text:
     markdown = text.read()
 
 def gen_html(markdown):
-    print("I here")
     markdown = markdown.replace("\r", "")
     markdown = divide_text(markdown)
-    print(f"markdown:\n{markdown}")
     html = ""
     line = 0
 
